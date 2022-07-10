@@ -46,7 +46,21 @@ pipeline{
                 }
             }           
         }
+        stage("pushing the helm chart to nexus"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
+                             sh '''
+                               helmversion=$(helm show chart myapp | grep version | cut -d: -f 2 | tr ' ' )
+                               tar -czvf myapp-$(helmverion).tgz myapp/
+                               curl -u admin:$docker_password http://34.71.200.141:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                            ''' 
+                    }
+                  
 
+                }
+            }
+        }
 
 
     }
