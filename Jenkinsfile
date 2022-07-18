@@ -24,10 +24,10 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
                              sh '''
-                               docker build -t 34.71.200.141:8083/springapp:${VERSION} .
-                               docker login -u admin -p $docker_password 34.71.200.141:8083
-                               docker push 34.71.200.141:8083/springapp:${VERSION}
-                               docker rmi 34.71.200.141:8083/springapp:${VERSION}
+                               docker build -t 35.184.190.157:8083/springapp:${VERSION} .
+                               docker login -u admin -p $docker_password 35.184.190.157:8083
+                               docker push 35.184.190.157:8083/springapp:${VERSION}
+                               docker rmi 35.184.190.157:8083/springapp:${VERSION}
                             ''' 
                     }
                   
@@ -53,7 +53,7 @@ pipeline{
                              sh '''
                                helmversion=$(helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ' )
                                tar -czvf myapp-$(helmversion).tgz myapp/
-                               curl -u admin:$docker_password http://34.71.200.141:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                               curl -u admin:$docker_password http://35.184.190.157:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                             ''' 
                     }
                   
