@@ -60,6 +60,18 @@ pipeline{
 
                 }
             }
+            stage('Deploying application on K8s cluster') {
+                steps {
+                    script{
+                       withCredentials([kubeconfigFile(credentialsId: 'kconfig_cluster', variable: 'KUBECONFIG')]) {
+                            dir('kubernetes/') {
+                              sh 'helm upgrade --install --set image.repository="35.184.190.157:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                            }
+                       }
+                        
+                    }
+                }
+            }
         }
 
 
